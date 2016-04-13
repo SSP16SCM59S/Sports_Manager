@@ -28,6 +28,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.2.0'
     compile 'com.facebook.android:facebook-android-sdk:4.+'
     compile 'com.android.support:design:23.2.0'
-
-
+    compile files('src/main/java/activation.jar')
+    compile files('src/main/java/additionnal.jar')
+    compile files('src/main/java/mail.jar')
 }

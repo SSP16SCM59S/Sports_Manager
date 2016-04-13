@@ -1,29 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:background="#EEEEEC"
     android:layout_height="match_parent">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:textSize="30sp"
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"
         android:gravity="center"
         android:id="@+id/textView"
-        android:layout_centerHorizontal="true"
-        android:textColor="@android:color/holo_blue_dark"
-        android:text="Schedule\nFragment"/>
+        android:layout_marginLeft="10dp"
+        android:textColor="@color/black"
+        android:text="Bangalore Titans VS Green Shaheen"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:id="@+id/tview1"
+        android:layout_marginLeft="8dp"
+        android:textColor="@color/black"
+        android:text=" @ Keating Hall 04/16/2016 9:00am "/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:autoLink="web"
-        android:textSize="15sp"
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:id="@+id/textView2"
+        android:layout_marginLeft="10dp"
+        android:textColor="@color/black"
+        android:text="Bangalore Titans VS Dolphins"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_centerHorizontal="true"
-        android:text="Page to be setup"
-        android:textColor="#000"
-        android:layout_below="@+id/textView"
-        android:textStyle="italic"/>
+        android:textSize="15sp"
+        android:gravity="center"
+        android:id="@+id/tview2"
+        android:layout_marginLeft="8dp"
+        android:textColor="@color/black"
+        android:text=" @ Keating Hall 04/23/2016 9:00am "/>
 
-</RelativeLayout>
+</LinearLayout>

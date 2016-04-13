@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,7 @@ public class TabFragment extends Fragment {
 
     public static TabLayout tabLayout;
     public static ViewPager viewPager;
-    public static int int_items = 4 ;
+    public static int int_items = 3 ;
 
     @Nullable
     @Override
@@ -69,8 +70,8 @@ public class TabFragment extends Fragment {
                 case 0 : return new PrimaryFragment();
                 case 1 : return new SocialFragment();
                 case 2 : return new UpdatesFragment();
-                case 3 : return new ProfileFragment();
-                default: return new PrimaryFragment();
+                //case 3 : return new ProfileFragment();
+                default: return new SentFragment();
             }
             //return null;
         }
@@ -96,8 +97,8 @@ public class TabFragment extends Fragment {
                     return "Activities";
                 case 2 :
                     return "On Campus";
-                case 3 :
-                    return "Profile";
+               // case 3 :
+                  //  return "Profile";
             }
             return null;
         }

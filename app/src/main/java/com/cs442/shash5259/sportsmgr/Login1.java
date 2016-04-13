@@ -2,6 +2,8 @@ package com.cs442.shash5259.sportsmgr;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -32,6 +34,10 @@ public class Login1 extends AppCompatActivity
 {
 
     private CallbackManager mcallbackmanager;
+    DataHandler db;
+    int ret;
+    int count=0;
+    String email = null,password = null,u_email=null,u_pass=null;
 
 
     private FacebookCallback<LoginResult> mcallback = new FacebookCallback<LoginResult>() {
@@ -92,7 +98,7 @@ public class Login1 extends AppCompatActivity
             public boolean onTouch(View v, MotionEvent event)
             {
                 tv.setText("Username");
-                etuser.setText(" ");
+                etuser.setText("");
 
                 return false;
             }
@@ -112,8 +118,47 @@ public class Login1 extends AppCompatActivity
         blogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Login1.this,MainActivity.class);
-                startActivity(i);
+                db = new DataHandler(getBaseContext());
+                db.open();
+                Cursor cs = db.returnPlayerData();
+
+                u_email = etuser.getText().toString().trim();
+                u_pass = etpass.getText().toString();
+
+                if(etuser.getText().length()!=0 && etpass.getText().length()!=0 && !etuser.getText().toString().equals("Username") && !etpass.getText().toString().equals("Password") )
+                {
+                    if(cs.moveToFirst())
+                    {
+                        do {
+                            email = cs.getString(1);
+                            password = cs.getString(2);
+                            ret = checklogin(email, password);
+                            if(ret == 1)
+                            {
+                                String MyPREFERENCES = "Login_Credentials1";
+                                SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedpreferences.edit();
+                                editor.putString("email",u_email );
+                                editor.putString("password",u_pass);
+                                editor.commit();
+
+                                count = 1;
+                                Intent i = new Intent(Login1.this,MainActivity.class);
+                                Login1.this.finish();
+                                startActivity(i);
+                            }
+                        }while (cs.moveToNext());
+                    }
+                        if(count == 0)
+                        Toast.makeText(Login1.this,"email or password Invalid please try again",Toast.LENGTH_SHORT).show();
+                }
+
+                else
+                {
+                    Toast.makeText(Login1.this,"Please Enter Username and Password",Toast.LENGTH_SHORT).show();
+                }
+
+
 
             }
         });
@@ -129,11 +174,27 @@ public class Login1 extends AppCompatActivity
 
     }
 
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
         mcallbackmanager.onActivityResult(requestCode,resultCode,data);
+    }
+
+    int checklogin(String x,String y)
+    {
+
+        if(x.equals(u_email) && y.equals(u_pass))
+            return 1;
+        else
+            return 0;
+    }
+
+    public void onBackPressed()
+    {
+
     }
 
 

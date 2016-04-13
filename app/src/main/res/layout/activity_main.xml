@@ -5,7 +5,8 @@
 
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#EEEEEC">
 
     <android.support.v7.widget.Toolbar
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -37,7 +38,7 @@
         <FrameLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="470dp"
             android:id="@+id/containerView">
         </FrameLayout>
 
@@ -51,6 +52,7 @@
             android:layout_gravity="start"
             android:id="@+id/shitstuff"
             app:itemTextColor="@color/black"
+            app:headerLayout="@layout/nav_header_main"
             app:menu="@menu/drawermenu"
             android:layout_marginTop="-10dp"
             />

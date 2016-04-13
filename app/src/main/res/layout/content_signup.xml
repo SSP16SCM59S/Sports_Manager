@@ -62,6 +62,7 @@
                     android:layout_width="match_parent"
                     android:textCursorDrawable="@null"
                     android:textColor="#000"
+                    android:maxLength="13"
                     android:layout_height="wrap_content"
                     android:inputType="textCapWords"
                     android:hint="Name" />
@@ -101,6 +102,7 @@
                 <EditText android:id="@+id/input_password"
                     android:layout_width="match_parent"
                     android:textStyle="italic"
+                    android:maxLength="10"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-100dp"
                     android:layout_weight="1"

@@ -16,7 +16,9 @@
 
 
     <EditText
-        android:layout_width="200dp"
+        android:layout_width="250dp"
+        android:maxLines="1"
+        android:maxLength="25"
         android:textCursorDrawable="@null"
         android:textColor="#000"
         android:backgroundTint="#000"
@@ -29,8 +31,9 @@
         android:layout_centerVertical="true"
         android:layout_alignStart="@+id/etpassword" />
     <EditText
-        android:layout_width="200dp"
+        android:layout_width="250dp"
         android:backgroundTint="#000"
+        android:maxLines="1"
         android:layout_height="wrap_content"
         android:textCursorDrawable="@null"
         android:textColor="#000"
@@ -38,6 +41,7 @@
         android:textStyle="italic"
         android:text="Password"
         android:inputType="textPassword"
+        android:maxLength="10"
         android:layout_weight="1"
         android:id="@+id/etpassword"
         android:layout_below="@+id/login_text_pass"

@@ -1,8 +1,29 @@
 package com.cs442.shash5259.sportsmgr;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Bundle;
@@ -11,14 +32,144 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by shash on 12-03-2016.
  */
 public class ProfileFragment extends Fragment{
+    FragmentManager mFragmentManager;
+    FragmentTransaction mFragmentTransaction;
+    ImageView i;
+    String u_gender=null;
+    private Uri outputFileUri;
+
+    private View.OnClickListener mOriginalListener;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.profile_layout,null);
+        mFragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
+        mFragmentTransaction = mFragmentManager.beginTransaction();
+        URI image = null;
+
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Profile");
+        setHasOptionsMenu(true);
+        String MyPREFERENCES = "Login_Credentials1";
+        SharedPreferences sharedpreferences = this.getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String u_email = sharedpreferences.getString("email", null);
+        String photo = sharedpreferences.getString("photo", null);
+
+
+        String u_name=null;
+
+
+        Cursor cs;
+        DataHandler db = new DataHandler(this.getActivity());
+        db.open();
+        cs = db.returnPlayerName(u_email);
+        if(cs!=null)
+        {
+            cs.moveToFirst();
+            u_name = cs.getString(0);
+            //Toast.makeText(MainActivity.this,"got data"+cs.getString(0),Toast.LENGTH_SHORT).show();
+        }
+
+        Cursor cs1;
+        DataHandler db1 = new DataHandler(this.getActivity());
+        db1.open();
+        cs1 = db.returnPlayerGender(u_email);
+        if(cs1!=null)
+        {
+            cs1.moveToFirst();
+            u_gender = cs1.getString(0);
+            //Toast.makeText(MainActivity.this,"got data"+cs.getString(0),Toast.LENGTH_SHORT).show();
+        }
+
+       View myInflatedView = inflater.inflate(R.layout.profile_layout, container,false);//use your layout by finding it
+        TextView t = (TextView) myInflatedView.findViewById(R.id.user_name);//find the textview in the layout selected
+        t.setText(u_name);
+
+        i = (ImageView)myInflatedView.findViewById(R.id.user_image);
+
+
+         if(u_gender.equals("Male"))
+            i.setImageResource(R.drawable.male);
+        else
+        i.setImageResource(R.drawable.user10);
+
+        i.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+               // Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                Intent intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+               intent.setType("image/*");
+               Intent camIntent = new Intent("android.media.action.IMAGE_CAPTURE");
+                intent.putExtra(Intent.EXTRA_INTENT, camIntent);
+                startActivityForResult(intent, 007);
+
+            }
+        });
+          //return inflater.inflate(R.layout.profile_layout,null);
+        return myInflatedView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.profile_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId())
+        {
+            case R.id.edit1profile:
+                //Toast.makeText((AppCompatActivity)getActivity(),"success",Toast.LENGTH_SHORT).show();
+                mFragmentTransaction.replace(R.id.containerView, new SettingsFragment()).commit();break;
+            case R.id.save1profile:
+                mFragmentTransaction.replace(R.id.containerView, new TabFragment()).commit();break;
+            case R.id.campusprofile:
+                mFragmentTransaction.replace(R.id.containerView, new CampusFragment()).commit();break;
+            default: return super.onOptionsItemSelected(item);
+
+        }return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+
+
+        Uri selectedImageUri;
+            selectedImageUri = data == null ? null : data.getData();
+        if(selectedImageUri!=null)
+        {
+            i.setImageURI(selectedImageUri);
+            String MyPREFERENCES = "Login_Credentials1";
+            SharedPreferences sharedpreferences1 = this.getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedpreferences1.edit();
+            editor.putString("photo", selectedImageUri.toString());
+            editor.commit();
+        }
+        else if(u_gender.equals("Male"))
+            i.setImageResource(R.drawable.male);
+        else
+            i.setImageResource(R.drawable.user10);
+
+
+
     }
 }
