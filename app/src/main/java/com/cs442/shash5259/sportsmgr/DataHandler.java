@@ -30,19 +30,34 @@ public class DataHandler {
 
     public static final String TABLE_NAME_PROFILE = "player_profile";
     public static final String TABLE_NAME_SPORT = "sport_profile";
+    public static final String TABLE_NAME_TEAM = "team_profile";
+    public static final String TABLE_PLAYER_STATS = "player_stats";
 
     //Team profile attributes
     /* Fill details for team here*/
+    public static final String t_name="t_name";
+    public static final String t_cap="t_cap";
+    public static final String t_max="t_max";
+    public static final String t_sport="t_sport";
 
     //Sport profile attributes
     /* Fill details for sport here*/
     public static final String s_name="s_name";
     public static final String s_max_teams="s_max_teams";
 
+    //Player Stats Attributes
+    public static final String p_email = "p_email";
+    public static final String p_sport = "p_sport";
+    public static final String p_team = "p_team";
+    public static final String p_captain = "p_captain";
+
     public static final String DATA_BASE_NAME = "sports_finale";
     public static final int DATABASE_VERSION = 1;
     public static final String TABLE_CREATE_PROFILE = "create table player_profile(name text not null,email text primary key,password text not null,phone text not null,dob text not null,gender text not null,role text not null,notify text not null);";
-    public static final String TABLE_CREATE_SPORT = "create table sport_profile(s_name text primary key,s_max_teams text primary key DEFAULT '16');";
+    public static final String TABLE_CREATE_SPORT = "create table sport_profile(s_name text primary key,s_max_teams text DEFAULT '16');";
+    public static final String TABLE_CREATE_TEAM = "create table team_profile(t_name text,t_sport text,t_cap text,t_max text, PRIMARY KEY(t_name,t_sport));";
+    public static final String TABLE_CREATE_PLAYER_STATS = "create table player_stats(p_email text not null,p_sport text not null,p_team text not null,p_captain text not null, PRIMARY KEY(p_email,p_sport));";
+
     DatabaseHelper dbhelper;
     Context ctx;
     SQLiteDatabase db;
@@ -68,6 +83,26 @@ public class DataHandler {
             {
                 db.execSQL(TABLE_CREATE_PROFILE);
                 db.execSQL(TABLE_CREATE_SPORT);
+                db.execSQL(TABLE_CREATE_TEAM);
+                db.execSQL(TABLE_CREATE_PLAYER_STATS);
+                db.execSQL("INSERT INTO sport_profile (s_name) VALUES ('Baseball');");
+                db.execSQL("INSERT INTO sport_profile (s_name) VALUES ('Cricket');");
+                db.execSQL("INSERT INTO sport_profile (s_name) VALUES ('Soccer');");
+                db.execSQL("INSERT INTO sport_profile (s_name) VALUES ('Football');");
+                db.execSQL("INSERT INTO sport_profile (s_name) VALUES ('Tabletennis');");
+                db.execSQL("INSERT INTO sport_profile (s_name) VALUES ('Bowling');");
+                db.execSQL("INSERT INTO sport_profile (s_name) VALUES ('Billiards');");
+                db.execSQL("INSERT INTO sport_profile (s_name) VALUES ('Basketball');");
+                db.execSQL("INSERT INTO sport_profile (s_name) VALUES ('Chess');");
+                db.execSQL("INSERT INTO sport_profile (s_name) VALUES ('Badminton');");
+                db.execSQL("INSERT INTO sport_profile (s_name) VALUES ('Racquetball');");
+                db.execSQL("INSERT INTO sport_profile (s_name) VALUES ('Yoga');");
+                db.execSQL("INSERT INTO sport_profile (s_name) VALUES ('Pilates');");
+                db.execSQL("INSERT INTO sport_profile (s_name) VALUES ('Swimming');");
+                db.execSQL("INSERT INTO sport_profile (s_name) VALUES ('Zumba');");
+                db.execSQL("INSERT INTO sport_profile (s_name) VALUES ('Kickboxing');");
+                db.execSQL("INSERT INTO sport_profile (s_name) VALUES ('Cardio');");
+
             }
             catch (Exception e)
             {
@@ -116,37 +151,43 @@ public class DataHandler {
         return db.insertOrThrow(TABLE_NAME_PROFILE, null, content);
     }
 
-    public long insertSportData()
-    {   ContentValues content = new ContentValues();
-        content.put(s_name,"Baseball");
-        content.put(s_name,"Cricket");
-        content.put(s_name,"Soccer");
-        content.put(s_name,"Football");
-        content.put(s_name,"Tabletennis");
-        content.put(s_name,"Bowling");
-        content.put(s_name,"Billiards");
-        content.put(s_name,"Basketball");
-        content.put(s_name,"Chess");
-        content.put(s_name,"Badminton");
-        content.put(s_name,"Racquetball");
-        content.put(s_name,"Yoga");
-        content.put(s_name,"Pilates");
-        content.put(s_name,"Swimming");
-        content.put(s_name,"Zumba");
-        content.put(s_name,"Kickboxing");
-        content.put(s_name,"Cardio");
-        return db.insert(TABLE_NAME_SPORT,null,content);
+    public long insertTeamData(String name,String sport,String captain,String max_teams)
+    {
+        ContentValues content = new ContentValues();
+        content.put(t_name,name);
+        content.put(t_sport,sport);
+        content.put(t_cap,captain);
+        content.put(t_max,max_teams);
+        return db.insertOrThrow(TABLE_NAME_TEAM, null, content);
     }
 
+    public long insertPlayerStats(String email,String sport,String team,String captain)
+    {
+        ContentValues content = new ContentValues();
+        content.put(p_email,email);
+        content.put(p_sport,sport);
+        content.put(p_team,team);
+        content.put(p_captain,captain);
+        return db.insertOrThrow(TABLE_PLAYER_STATS, null, content);
+    }
 
     public long updatePlayerData(String pl_password,String pl_phone,String pl_email)
     {
         ContentValues content = new ContentValues();
         content.put(phone,pl_phone);
-        content.put(password,pl_password);
+        content.put(password, pl_password);
 
-        return db.update(TABLE_NAME_PROFILE,content,"email='"+pl_email+"'",null);
+        return db.update(TABLE_NAME_PROFILE, content, "email='" + pl_email + "'", null);
 
+
+    }
+
+    public Cursor returnTeamData(String sport)
+    {
+        Cursor cs;
+        String query = "SELECT t_name FROM "+TABLE_NAME_TEAM+" WHERE t_sport ='"+sport+"'";
+        cs = db.rawQuery(query,null);
+        return cs;
     }
 
    public Cursor returnPlayerData()
@@ -167,7 +208,6 @@ public class DataHandler {
         String query = "SELECT * FROM "+TABLE_NAME_PROFILE+" WHERE email ='"+s+"'";
         //cs = db.query(TABLE_NAME,new String[] {name,veg},null,null,null,null,null);
         cs = db.rawQuery(query,null);
-
         return cs;
     }
 
@@ -185,14 +225,36 @@ public class DataHandler {
         return cs;
     }
 
-    public Cursor DeletePlayerData()
+    public Cursor returnSportData()
     {
-        //return db.query(TABLE_NAME,new String[]{name,veg}, null, null, null, null, null);
         Cursor cs;
-        String query = "DELETE FROM "+TABLE_NAME_PROFILE;
-        //cs = db.query(TABLE_NAME,new String[] {name,veg},null,null,null,null,null);
+        String query = "SELECT * FROM "+TABLE_NAME_SPORT;
         cs = db.rawQuery(query,null);
         return cs;
+    }
+
+    public Cursor returnPlayerStats(String email)
+    {
+        Cursor cs;
+        String query = "SELECT p_team,p_sport FROM "+TABLE_PLAYER_STATS+" WHERE p_email ='"+email+"'";
+        cs = db.rawQuery(query,null);
+        return cs;
+    }
+
+    public Cursor returnPlayerStats1(String email)
+    {
+        Cursor cs;
+        String query = "SELECT p_sport FROM "+TABLE_PLAYER_STATS+" WHERE p_email ='"+email+"'";
+        cs = db.rawQuery(query,null);
+        return cs;
+    }
+
+    public void removePlayerStats(String email,String sport)
+    {
+        Cursor cs;
+        String query = "DELETE FROM "+TABLE_PLAYER_STATS+" p_email ='"+email+"'"+" and p_sport ='"+sport+"'";
+         db.delete(TABLE_PLAYER_STATS,"p_email='"+email+"'"+" and p_sport='"+sport+"'",null);
+
     }
 
 }

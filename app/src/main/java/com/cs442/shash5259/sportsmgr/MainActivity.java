@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         Cursor cs=null;
-        DataHandler db = new DataHandler(MainActivity.this);;
+        DataHandler db = new DataHandler(MainActivity.this);
         db.open();
         cs = db.returnPlayerName(u_email);
         if(cs!=null)

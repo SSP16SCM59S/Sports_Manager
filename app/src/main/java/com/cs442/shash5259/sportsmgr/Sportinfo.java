@@ -1,7 +1,9 @@
 package com.cs442.shash5259.sportsmgr;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +16,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,22 +29,44 @@ public class Sportinfo extends Fragment{
     FragmentTransaction mFragmentTransaction;
     SharedPreferences sharedpreferences;
     String MyPREFERENCES = "Login_Credentials1";
-
-
+    Button b1,b2;
+    View rootView;
+    String u_name=null;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mFragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();
 
-        View rootView = inflater.inflate(R.layout.sport_layout, container, false);
+        rootView = inflater.inflate(R.layout.sport_layout, container, false);
         TextView t1 = (TextView)rootView.findViewById(R.id.sport_id);
         ImageView i1 = (ImageView)rootView.findViewById(R.id.sport_image);
+        b1 = (Button)rootView.findViewById(R.id.create_team);
+        b2 = (Button)rootView.findViewById(R.id.join_team);
+
         setHasOptionsMenu(true);
         sharedpreferences = this.getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        String title= sharedpreferences.getString("sport", null);
+        final String title= sharedpreferences.getString("sport", null);
+        final String u_email = sharedpreferences.getString("email", null);
+
+
+
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(title);
 
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                mFragmentTransaction.replace(R.id.containerView, new myDialogFragment()).commit();
+            }
+        });
+
+        b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mFragmentTransaction.replace(R.id.containerView, new TeamsListFragment()).commit();
+            }
+        });
         t1.setText(title);
         ((AppCompatActivity)getActivity()).onBackPressed();
 
@@ -97,7 +123,7 @@ public class Sportinfo extends Fragment{
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.sport_profile_menu:
-                mFragmentTransaction.replace(R.id.containerView, new UpdatesFragment()).commit();
+                mFragmentTransaction.replace(R.id.containerView, new TabFragment()).commit();
         }return super.onOptionsItemSelected(item);
     }
 }

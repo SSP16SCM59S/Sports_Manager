@@ -24,12 +24,12 @@
         "source": "C:\\Users\\shash\\SportsMgr\\facebook\\res\\layout\\messenger_button_send_blue_large.xml"
     },
     {
-        "merged": "C:\\Users\\shash\\SportsMgr\\facebook\\build\\intermediates\\res\\merged\\debug\\layout\\com_facebook_activity_layout.xml",
-        "source": "C:\\Users\\shash\\SportsMgr\\facebook\\res\\layout\\com_facebook_activity_layout.xml"
-    },
-    {
         "merged": "C:\\Users\\shash\\SportsMgr\\facebook\\build\\intermediates\\res\\merged\\debug\\layout\\messenger_button_send_white_large.xml",
         "source": "C:\\Users\\shash\\SportsMgr\\facebook\\res\\layout\\messenger_button_send_white_large.xml"
+    },
+    {
+        "merged": "C:\\Users\\shash\\SportsMgr\\facebook\\build\\intermediates\\res\\merged\\debug\\layout\\com_facebook_activity_layout.xml",
+        "source": "C:\\Users\\shash\\SportsMgr\\facebook\\res\\layout\\com_facebook_activity_layout.xml"
     },
     {
         "merged": "C:\\Users\\shash\\SportsMgr\\facebook\\build\\intermediates\\res\\merged\\debug\\layout\\com_facebook_tooltip_bubble.xml",

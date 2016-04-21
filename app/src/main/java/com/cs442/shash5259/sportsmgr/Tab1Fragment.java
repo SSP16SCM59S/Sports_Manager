@@ -156,4 +156,15 @@ public class Tab1Fragment extends Fragment{
 
         return rootView;
     }
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if(isVisibleToUser == true)
+        {
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Recreational");
+        }
+    }
+
+
 }

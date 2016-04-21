@@ -224,55 +224,64 @@ public class Signup extends AppCompatActivity implements View.OnClickListener{
                     //inserting data into the database from register page
                     db = new DataHandler(Signup.this);
                     db.open();
-                    long id = db.insertPlayerData(tmp1,tmp2,tmp3,tmp5,tmp4,tmp6,tmp7,tmp8);
-                    Toast.makeText(getBaseContext(), "Registration Successful"+id, Toast.LENGTH_LONG).show();
-                    //db.close();
+                    try
+                    {
+                        long id = db.insertPlayerData(tmp1,tmp2,tmp3,tmp5,tmp4,tmp6,tmp7,tmp8);
+                        Toast.makeText(getBaseContext(), "Registration Successful", Toast.LENGTH_LONG).show();
 
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
 
-                            System.out.println(tmp2);
-
-                            Properties props = new Properties();
-                            props.put("mail.smtp.host", "smtp.gmail.com");
-                            props.put("mail.smtp.socketFactory.port", "465");
-                            props.put("mail.smtp.socketFactory.class",
-                                    "javax.net.ssl.SSLSocketFactory");
-                            props.put("mail.smtp.auth", "true");
-                            props.put("mail.smtp.port", "465");
-
-                            Session session = Session.getDefaultInstance(props,
-                                    new Authenticator() {
-                                        protected PasswordAuthentication getPasswordAuthentication() {
-                                            return new PasswordAuthentication("sportsmanagercontact@gmail.com","iitsports");//change your password accordingly
-                                        }
-                                    });
-
-                            //compose message
-                            try {
-                                System.out.println("inside try");
                                 System.out.println(tmp2);
 
-                                MimeMessage message = new MimeMessage(session);
-                                message.setFrom(new InternetAddress("sportsmanagercontact@gmail.com"));//change accordingly
-                                message.addRecipient(Message.RecipientType.TO, new InternetAddress(tmp2));
-                                message.setSubject("Welcome "  + tmp1);
-                                message.setText("You have successfully registered to the Sports Manager Application.");
+                                Properties props = new Properties();
+                                props.put("mail.smtp.host", "smtp.gmail.com");
+                                props.put("mail.smtp.socketFactory.port", "465");
+                                props.put("mail.smtp.socketFactory.class",
+                                        "javax.net.ssl.SSLSocketFactory");
+                                props.put("mail.smtp.auth", "true");
+                                props.put("mail.smtp.port", "465");
 
-                                //send message
-                                Transport.send(message);
+                                Session session = Session.getDefaultInstance(props,
+                                        new Authenticator() {
+                                            protected PasswordAuthentication getPasswordAuthentication() {
+                                                return new PasswordAuthentication("sportsmanagercontact@gmail.com","iitsports");//change your password accordingly
+                                            }
+                                        });
 
-                                //System.out.println("message sent successfully");
+                                //compose message
+                                try {
+                                    System.out.println("inside try");
+                                    System.out.println(tmp2);
 
-                            } catch (MessagingException e) {throw new RuntimeException(e);}
+                                    MimeMessage message = new MimeMessage(session);
+                                    message.setFrom(new InternetAddress("sportsmanagercontact@gmail.com"));//change accordingly
+                                    message.addRecipient(Message.RecipientType.TO, new InternetAddress(tmp2));
+                                    message.setSubject("Welcome "  + tmp1);
+                                    message.setText("You have successfully registered to the Sports Manager Application.");
 
-                        }
-                    }).start();
+                                    //send message
+                                    Transport.send(message);
+
+                                    //System.out.println("message sent successfully");
+
+                                } catch (MessagingException e) {throw new RuntimeException(e);}
+
+                            }
+                        }).start();
 
 
-                   Intent i1 = new Intent(Signup.this, Login1.class);
-                    startActivity(i1);//goes to login page if all are filled
+                        Intent i1 = new Intent(Signup.this, Login1.class);
+                        startActivity(i1);//goes to login page if all are filled
+                    }
+                    catch (Exception e)
+                    {
+                        Toast.makeText(Signup.this,"Email already exists",Toast.LENGTH_SHORT).show();
+                    }
+
+                    //db.close();
+
                 }
                 break;
 
@@ -320,4 +329,5 @@ public class Signup extends AppCompatActivity implements View.OnClickListener{
     {
 
     }
+
 }

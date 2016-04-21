@@ -46,7 +46,7 @@ public class Tab2Fragment extends Fragment {
                 SharedPreferences.Editor editor = sharedpreferences.edit();
                 editor.putString("sport","Yoga");
                 editor.commit();
-                mFragmentTransaction.replace(R.id.containerView, new Sportinfo()).commit();
+                mFragmentTransaction.replace(R.id.containerView, new Sportinfo2()).commit();
             }
         });
         i2.setOnClickListener(new View.OnClickListener() {
@@ -55,7 +55,7 @@ public class Tab2Fragment extends Fragment {
                 SharedPreferences.Editor editor = sharedpreferences.edit();
                 editor.putString("sport","Pilates");
                 editor.commit();
-                mFragmentTransaction.replace(R.id.containerView, new Sportinfo()).commit();
+                mFragmentTransaction.replace(R.id.containerView, new Sportinfo2()).commit();
 
             }
         });
@@ -65,7 +65,7 @@ public class Tab2Fragment extends Fragment {
                 SharedPreferences.Editor editor = sharedpreferences.edit();
                 editor.putString("sport","Swimming");
                 editor.commit();
-                mFragmentTransaction.replace(R.id.containerView, new Sportinfo()).commit();
+                mFragmentTransaction.replace(R.id.containerView, new Sportinfo2()).commit();
 
             }
         });
@@ -75,7 +75,7 @@ public class Tab2Fragment extends Fragment {
                 SharedPreferences.Editor editor = sharedpreferences.edit();
                 editor.putString("sport","Zumba");
                 editor.commit();
-                mFragmentTransaction.replace(R.id.containerView, new Sportinfo()).commit();
+                mFragmentTransaction.replace(R.id.containerView, new Sportinfo2()).commit();
             }
         });
         i5.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +84,7 @@ public class Tab2Fragment extends Fragment {
                 SharedPreferences.Editor editor = sharedpreferences.edit();
                 editor.putString("sport","Kickboxing");
                 editor.commit();
-                mFragmentTransaction.replace(R.id.containerView, new Sportinfo()).commit();
+                mFragmentTransaction.replace(R.id.containerView, new Sportinfo2()).commit();
             }
         });
         i6.setOnClickListener(new View.OnClickListener() {
@@ -93,13 +93,22 @@ public class Tab2Fragment extends Fragment {
                 SharedPreferences.Editor editor = sharedpreferences.edit();
                 editor.putString("sport","Cardio");
                 editor.commit();
-                mFragmentTransaction.replace(R.id.containerView, new Sportinfo()).commit();
+                mFragmentTransaction.replace(R.id.containerView, new Sportinfo2()).commit();
             }
         });
 
 
         return rootView;
 
+    }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if(isVisibleToUser == true)
+        {
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Recreational");
+        }
     }
 }
