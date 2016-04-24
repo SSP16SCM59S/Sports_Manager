@@ -10,8 +10,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -42,7 +46,7 @@ public class TeamsListFragment extends Fragment {
 
         rootView = inflater.inflate(R.layout.teams_display, container, false);
         lv = (ListView)rootView.findViewById(R.id.teamslist);
-
+        setHasOptionsMenu(true);
         sharedpreferences = this.getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         title= sharedpreferences.getString("sport", null);
 
@@ -51,7 +55,7 @@ public class TeamsListFragment extends Fragment {
 
         populateHotelList();
         populateListView();
-        //registerClickCallBack();
+        registerClickCallBack();
 
 
         return rootView;
@@ -78,7 +82,7 @@ public class TeamsListFragment extends Fragment {
 
         //list.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, strArr));
         lv.setAdapter(adapter);
-        //registerClickCallBack();
+        registerClickCallBack();
     }
 
     public class MyListAdapter extends ArrayAdapter<TeamNames>
@@ -105,6 +109,44 @@ public class TeamsListFragment extends Fragment {
             //return super.getView(position,convertView,parent);
         }
     }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.sport_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.sport_profile_menu:
+                mFragmentTransaction.replace(R.id.containerView, new TabFragment()).commit();
+        }return super.onOptionsItemSelected(item);
+    }
+
+    private void registerClickCallBack()
+    {
+        final ArrayAdapter<TeamNames> adapter = new MyListAdapter();
+        final ListView lv = (ListView)rootView.findViewById(R.id.teamslist);
+        lv.setClickable(true);
+        lv.setItemsCanFocus(true);
+        lv.setAdapter(adapter);
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                TeamNames clickedTeam = myTeams.get(position);
+                lv.setItemChecked(position, true);
+
+                TextView t1 = (TextView) view.findViewById(R.id.list_text);
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putString("team",t1.getText().toString());
+                editor.commit();
+
+                mFragmentTransaction.replace(R.id.containerView, new PlayersListFragment()).commit();
+            }
+        });
+    }
 
 }

@@ -249,6 +249,12 @@ public class DataHandler {
         return cs;
     }
 
+    public Cursor returnPlayers(String team) {
+        Cursor cs;
+        String query = "SELECT p_email,p_captain FROM " + TABLE_PLAYER_STATS + " WHERE p_team ='" + team + "'";
+        cs = db.rawQuery(query, null);
+        return cs;
+    }
     public void removePlayerStats(String email,String sport)
     {
         Cursor cs;
@@ -257,4 +263,20 @@ public class DataHandler {
 
     }
 
+    public Cursor returnPlayerCount(String team,String sport)
+    {
+        Cursor cs;
+        String query = "SELECT p_email FROM "+TABLE_PLAYER_STATS+" WHERE p_team ='"+team+"' and p_sport ='"+sport+"';";
+        cs = db.rawQuery(query,null);
+        return cs;
+    }
+
+
+    public Cursor returnPlayerCount1(String email,String sport)
+    {
+        Cursor cs;
+        String query = "SELECT p_team FROM "+TABLE_PLAYER_STATS+" WHERE p_email ='"+email+"' and p_sport ='"+sport+"';";
+        cs = db.rawQuery(query,null);
+        return cs;
+    }
 }

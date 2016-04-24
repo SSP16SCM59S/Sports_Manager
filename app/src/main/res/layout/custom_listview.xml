@@ -8,6 +8,6 @@
     android:textColor="@color/black"
     android:textStyle="italic"
     android:layout_marginLeft="5dp"
-    android:textSize="20sp"
+    android:textSize="30sp"
     android:id="@+id/list_text"/>
 </LinearLayout>

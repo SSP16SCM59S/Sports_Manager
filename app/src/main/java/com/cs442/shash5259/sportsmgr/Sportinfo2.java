@@ -1,5 +1,7 @@
 package com.cs442.shash5259.sportsmgr;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,6 +23,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
 /**
  * Created by shash on 21-04-2016.
  */
@@ -36,6 +40,8 @@ public class Sportinfo2 extends Fragment {
     String u_name=null;
     String u_email=null;
     String title = null;
+    AlarmManager alarmManager;
+    private PendingIntent pendingIntent;
     int check=0;
     TextView t1,t2,t3,t4,t5,t6,t7;
     ImageView i1;
@@ -44,6 +50,8 @@ public class Sportinfo2 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mFragmentManager = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();
+
+        alarmManager = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
 
         sharedpreferences = this.getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         title= sharedpreferences.getString("sport", null);
@@ -162,6 +170,23 @@ public class Sportinfo2 extends Fragment {
                         Toast.makeText((AppCompatActivity)getActivity(),"Registered Successfully",Toast.LENGTH_SHORT).show();
                         b1.setText("Remove From Schedule");
                         check=1;
+
+                      /*  if(title.equals("Zumba"))
+                        {
+                            Calendar calendar = Calendar.getInstance();
+
+                            Intent myIntent = new Intent((AppCompatActivity)getActivity(), notify.class);
+                            //pendingIntent = PendingIntent.getBroadcast((AppCompatActivity)getActivity(), 0, myIntent, 0);
+                            pendingIntent = PendingIntent.getService(getContext(),21,myIntent,0);
+                            calendar.set(Calendar.HOUR_OF_DAY, 18);
+                            calendar.set(Calendar.MINUTE, 30);
+                            calendar.set(Calendar.SECOND, 0);
+                            calendar.set(Calendar.AM_PM, Calendar.PM);
+
+                            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 12 * 60 * 60 * 1000, pendingIntent);
+                            System.out.println("reached alarm");
+
+                        }*/
                     }
                     catch (Exception e)
                     {
@@ -173,8 +198,9 @@ public class Sportinfo2 extends Fragment {
                     DataHandler db1 = new DataHandler((AppCompatActivity)getActivity());
                     db1.open();
                     Cursor cs1;
-                     db1.removePlayerStats(u_email,title);
+                    db1.removePlayerStats(u_email, title);
                     Toast.makeText((AppCompatActivity)getActivity(),"You Have Been Unregistered",Toast.LENGTH_SHORT).show();
+                   // getActivity().stopService(new Intent(getContext(), notify.class));
                     b1.setText("Add to Schedule");
                     check=0;
                 }

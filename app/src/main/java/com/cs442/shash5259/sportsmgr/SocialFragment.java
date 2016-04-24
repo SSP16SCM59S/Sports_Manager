@@ -26,7 +26,6 @@ public class SocialFragment extends Fragment {
     ListView lv;
     View rootView;
     String u_email=null;
-    String title=null;
     String setsport=null;
     String sport_name=null;
     String t_name=null;
@@ -40,7 +39,6 @@ public class SocialFragment extends Fragment {
        {
            rootView = inflater.inflate(R.layout.social_layout, container, false);
            sharedpreferences = this.getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-           title= sharedpreferences.getString("sport", null);
            u_email= sharedpreferences.getString("email", null);
            lv = (ListView)rootView.findViewById(R.id.mylist);
 

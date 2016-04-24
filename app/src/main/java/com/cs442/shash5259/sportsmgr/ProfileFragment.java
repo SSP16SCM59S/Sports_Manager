@@ -20,6 +20,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -52,6 +53,7 @@ public class ProfileFragment extends Fragment{
     ImageView i;
     String u_gender=null;
     private Uri outputFileUri;
+    TextView t1;
 
     private View.OnClickListener mOriginalListener;
     @Nullable
@@ -98,9 +100,35 @@ public class ProfileFragment extends Fragment{
        View myInflatedView = inflater.inflate(R.layout.profile_layout, container,false);//use your layout by finding it
         TextView t = (TextView) myInflatedView.findViewById(R.id.user_name);//find the textview in the layout selected
         t.setText(u_name);
-
+        t1 = (TextView)myInflatedView.findViewById(R.id.myteams);
         i = (ImageView)myInflatedView.findViewById(R.id.user_image);
 
+        t1.setText("Bangalore Titans \nDolphins\nKings");
+        t1.setMovementMethod(new ScrollingMovementMethod());
+
+        Cursor cs2;
+        DataHandler db2 = new DataHandler(this.getActivity());
+        db2.open();
+        cs2 = db2.returnPlayerStats(u_email);
+        cs2.moveToFirst();
+        String arr[] = new String[cs2.getCount()];
+        String str = "";
+        int x=0;
+        while (!cs2.isAfterLast()) {
+
+            arr[x] = cs2.getString(0);
+            x++;
+            // System.out.println(sport_name);
+            cs2.moveToNext();
+        }
+
+        for(int i=0;i<arr.length;i++)
+        {
+            if(!arr[i].equals("Yoga")&&!arr[i].equals("Zumba")&&!arr[i].equals("Swimming")&&!arr[i].equals("Pilates")&&!arr[i].equals("Kickboxing")&&!arr[i].equals("Cardio"))
+            str += arr[i]+"\n";
+        }
+
+        t1.setText(str);
 
          if(u_gender.equals("Male"))
             i.setImageResource(R.drawable.male);
