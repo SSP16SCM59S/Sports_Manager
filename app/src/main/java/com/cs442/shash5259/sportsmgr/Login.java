@@ -13,7 +13,7 @@ import com.facebook.FacebookSdk;
 public class Login extends AppCompatActivity
 {
 
-    private final int SPLASH_DISPLAY_LENGTH = 1000;
+    private final int SPLASH_DISPLAY_LENGTH = 3000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)

@@ -138,6 +138,8 @@ public class TeamsListFragment extends Fragment {
 
                 TeamNames clickedTeam = myTeams.get(position);
                 lv.setItemChecked(position, true);
+                lv.setClickable(true);
+
 
                 TextView t1 = (TextView) view.findViewById(R.id.list_text);
                 SharedPreferences.Editor editor = sharedpreferences.edit();

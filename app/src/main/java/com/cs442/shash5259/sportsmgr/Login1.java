@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.telecom.Call;
 import android.text.Html;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,9 +27,17 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Arrays;
 
 public class Login1 extends AppCompatActivity
 {
@@ -37,19 +46,63 @@ public class Login1 extends AppCompatActivity
     DataHandler db;
     int ret;
     int count=0;
+    String fbemail;
+    String fbbirthday;
     String email = null,password = null,u_email=null,u_pass=null;
 
 
-    private FacebookCallback<LoginResult> mcallback = new FacebookCallback<LoginResult>() {
+    private FacebookCallback<LoginResult> mcallback = new FacebookCallback<LoginResult>()
+    {
         @Override
-        public void onSuccess(LoginResult loginResult) {
+        public void onSuccess(LoginResult loginResult)
+        {
             AccessToken maccess = loginResult.getAccessToken();
             Profile profile = Profile.getCurrentProfile();
 
-            if(profile != null)
-            {
-                Toast.makeText(Login1.this,profile.getName(),Toast.LENGTH_LONG).show();
+
+            if(profile != null) {
+
+                String fb_name = profile.getFirstName();
+                String fb_email = fb_name+"@facebook.com";
+                Cursor cs=null;
+                DataHandler db = new DataHandler(Login1.this);
+                db.open();
+                cs = db.returnPlayerName(fb_email);
+
+                if(cs.getCount()!=0)
+                {
+                    Log.v("hello","Reached here1");
+                    String MyPREFERENCES = "Login_Credentials1";
+                    SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                    editor.putString("email",fb_email );
+                    editor.putString("password",fb_name);
+                    editor.commit();
+                    Intent i = new Intent(Login1.this,MainActivity.class);
+                    Login1.this.finish();
+                    startActivity(i);
+                    //Toast.makeText(MainActivity.this,"got data"+cs.getString(0),Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    long id = db.insertPlayerData(fb_name,fb_email,fb_name,"03/15/1991","2245184818","male","0","2");
+                    //Toast.makeText(getBaseContext(),fb_name+id,Toast.LENGTH_SHORT).show();
+                    Log.v("hello","Reached here");
+                    String MyPREFERENCES = "Login_Credentials1";
+                    SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                    editor.putString("email",fb_email );
+                    editor.putString("password", fb_name);
+                    editor.commit();
+                    Intent i = new Intent(Login1.this,MainActivity.class);
+                    Login1.this.finish();
+                    startActivity(i);
+
+                }
+
+
             }
+
 
 
         }
@@ -83,7 +136,9 @@ public class Login1 extends AppCompatActivity
         TextView tv2 = (TextView)findViewById(R.id.textView);
         TextView tv3 = (TextView)findViewById(R.id.textView2);
 
-        login.setReadPermissions("user_friends");
+       // login.setReadPermissions("user_friends");
+        login.setReadPermissions (Arrays.asList(
+                "public_profile", "email", "user_birthday", "user_friends"));
         login.registerCallback(mcallbackmanager,mcallback);
         //Typeface font = Typeface.createFromAsset(getAssets(), "Helvetica Narrow Bold.ttf");
         //tv3.setTypeface(font,font.BOLD);

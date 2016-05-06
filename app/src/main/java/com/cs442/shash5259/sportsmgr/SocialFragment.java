@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,15 +38,31 @@ public class SocialFragment extends Fragment {
        @Override
        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
        {
-           rootView = inflater.inflate(R.layout.social_layout, container, false);
+
            sharedpreferences = this.getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
            u_email= sharedpreferences.getString("email", null);
-           lv = (ListView)rootView.findViewById(R.id.mylist);
 
+           Cursor cs1=null;
+           DataHandler db1 = new DataHandler(getActivity());
 
+           db1.open();
+           cs1 = db1.returnPlayerStats(u_email);
 
-           populateHotelList();
-           populateListView();
+           if(cs1.getCount() >0)
+           {
+               rootView = inflater.inflate(R.layout.social_layout, container, false);
+               lv = (ListView)rootView.findViewById(R.id.mylist);
+
+               lv.setClickable(true);
+
+               populateHotelList();
+               populateListView();
+           }
+           else
+           {
+               rootView = inflater.inflate(R.layout.layout, container, false);
+           }
+
            return rootView;
        }
 
@@ -79,6 +96,8 @@ public class SocialFragment extends Fragment {
                 cs.moveToNext();
             }
         }
+
+
 
     }
 

@@ -24,6 +24,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
+
 import java.net.URI;
 
 public class MainActivity extends AppCompatActivity {
@@ -81,7 +83,10 @@ public class MainActivity extends AppCompatActivity {
         View hView =  navigationView.getHeaderView(0);
         TextView nav_user = (TextView)hView.findViewById(R.id.welcome_user);
         ImageView i = (ImageView)hView.findViewById(R.id.imageView);
-        nav_user.setText("Hi, "+u_name);
+        nav_user.setText("Hi, " + u_name);
+
+
+
 
 
         if(u_gender.equals("Male"))
@@ -156,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
                     editor.putString("email","");
                     editor.putString("password","");
                     editor.commit();
+                    LoginManager.getInstance().logOut();
                     Intent inte = new Intent(MainActivity.this,Login1.class);
                     startActivity(inte);
                 }

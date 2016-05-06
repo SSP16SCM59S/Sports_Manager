@@ -141,7 +141,9 @@ public class ProfileFragment extends Fragment{
             public void onClick(View v)
             {
                // Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                //Intent intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 Intent intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
                intent.setType("image/*");
                Intent camIntent = new Intent("android.media.action.IMAGE_CAPTURE");
                 intent.putExtra(Intent.EXTRA_INTENT, camIntent);
