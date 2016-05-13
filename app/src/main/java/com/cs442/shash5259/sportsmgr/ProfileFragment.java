@@ -61,7 +61,7 @@ public class ProfileFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mFragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();
-        URI image = null;
+        Uri image=null;
 
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Profile");
@@ -71,6 +71,10 @@ public class ProfileFragment extends Fragment{
         String u_email = sharedpreferences.getString("email", null);
         String photo = sharedpreferences.getString("photo", null);
 
+        if(photo!=null)
+        {
+            image = Uri.parse(photo);
+        }
 
         String u_name=null;
 
@@ -129,6 +133,7 @@ public class ProfileFragment extends Fragment{
         }
 
         t1.setText(str);
+
 
          if(u_gender.equals("Male"))
             i.setImageResource(R.drawable.male);

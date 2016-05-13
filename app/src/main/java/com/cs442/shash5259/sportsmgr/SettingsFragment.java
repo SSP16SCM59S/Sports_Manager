@@ -3,6 +3,7 @@ package com.cs442.shash5259.sportsmgr;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -42,11 +43,17 @@ public class SettingsFragment extends Fragment {
         mFragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();
         pattern = Pattern.compile(PASSWORD_PATTERN);
-
+        Uri image=null;
         String MyPREFERENCES = "Login_Credentials1";
         SharedPreferences sharedpreferences = this.getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         final String u_email = sharedpreferences.getString("email", null);
         String u_name=null,u_phone=null,u_dob=null,u_gender=null,u_notify=null,u_password=null;
+        String photo = sharedpreferences.getString("photo", null);
+
+        if(photo!=null)
+        {
+            image = Uri.parse(photo);
+        }
 
         Cursor cs;
         DataHandler db = new DataHandler(this.getActivity());
@@ -83,7 +90,8 @@ public class SettingsFragment extends Fragment {
 
         ImageView i = (ImageView)myInflatedView.findViewById(R.id.imgProfile1);
 
-        if(u_gender.equals("Male"))
+
+         if(u_gender.equals("Male"))
             i.setImageResource(R.drawable.male);
         else
             i.setImageResource(R.drawable.user10);

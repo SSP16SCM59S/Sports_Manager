@@ -120,6 +120,7 @@ public class PrimaryFragment extends Fragment {
             while (!cs.isAfterLast()) {
                 t_name = cs.getString(0);
                 sport_name = cs.getString(1);
+                Log.v(t_name,sport_name);
                 myTeams.add(new myTeamInfo(t_name,sport_name));
                 cs.moveToNext();
             }
@@ -169,8 +170,8 @@ public class PrimaryFragment extends Fragment {
             {
                 sport_type = "Recreational Sports";
 
-
-            }
+               t2.setText(sport_type+" -> "+setsport);
+           }
        /*     if (setsport.equals("Soccer"))
             {
             // Code for recreation sport scheduling.
@@ -268,7 +269,7 @@ public class PrimaryFragment extends Fragment {
                     // Current day is Monday
 
                     case Calendar.TUESDAY:
-                        int counterb=0;
+                        int counterb = 0;
                         cal1.add(Calendar.DATE,counterb+1);
                         reportDate1=dateFormat1.format(cal1.getTime());
                         //  t3.setText("Next class is on Wednesday from 7am-8am");
@@ -321,7 +322,7 @@ public class PrimaryFragment extends Fragment {
                         }
                         break;
                     case Calendar.SATURDAY:
-                        int countere=0;
+                        int countere = 0;
                         cal1.add(Calendar.DATE,countere+2);
                         reportDate1=dateFormat1.format(cal1.getTime());
                         //  t3.setText("Next class is on Monday from 7am-8am");
@@ -517,7 +518,7 @@ public class PrimaryFragment extends Fragment {
                         }
                         break;
                     case Calendar.THURSDAY:
-                        int counterd=0;
+                        int counterd = 0;
                         cal3.add(Calendar.DATE,counterd+1);
                         reportDate1=dateFormat1.format(cal3.getTime());
                         t1.setText(currentTeam.getTeam_name());
@@ -547,7 +548,7 @@ public class PrimaryFragment extends Fragment {
                         }
                         break;
                     case Calendar.SATURDAY:
-                        int counterf=0;
+                        int counterf = 0;
                         cal3.add(Calendar.DATE,counterf+3);
                         reportDate1=dateFormat1.format(cal3.getTime());
                         t1.setText(currentTeam.getTeam_name());
